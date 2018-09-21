@@ -1,29 +1,14 @@
-// class Game {
-//   run() {
-//     // set up board
-//     // until full tower is moved
-//       // get valid move from player
-//       // make the move
-//     // say congrats
-//   }
-// }
-
-const readline = require('readline');
-
-const reader = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
 class Game {
-  constructor() {
+  constructor(reader, completionCallback) {
     this.towers = [[1, 2, 3], [], []];
+    this.reader = reader;
+    this.completionCallback = completionCallback;
   }
 
   run() {
     console.log(this.towers);
 
-    reader.question('Make a move\n', (response) => {
+    this.reader.question('Make a move\n', (response) => {
       let [from, to] = response.split(',').map(s => parseInt(s)); // [0, 1]
 
       if (this.isValid(from, to)) {
@@ -35,7 +20,7 @@ class Game {
       if (this.isOver()) {
         console.log(this.towers);
         console.log('Congratulations');
-        reader.close();
+        this.completionCallback();
       } else {
         this.run();
       }
@@ -55,4 +40,4 @@ class Game {
   }
 }
 
-new Game().run();
+module.exports = Game;
